@@ -23,11 +23,15 @@ describe("CalcService", ()=>{
 
   beforeEach(()=>{
     console.log("Before earch is called");
+     shared = jasmine.createSpyObj("SharedService",["mySharedFunction"]);
+
     TestBed.configureTestingModule({
-      providers: [SharedService,CalcService]
+      providers: [SharedService, /*,CalcService*/{
+        provide: SharedService, useValue : shared
+      }]
     });
     
-    shared = TestBed.inject(SharedService);
+   //shared = TestBed.inject(SharedService);
     calc = TestBed.inject(CalcService);
 
 })
@@ -43,16 +47,16 @@ describe("CalcService", ()=>{
   })
 
   it("should call the mySharedFunction function using spyOn", ()=>{
-    const shared = new SharedService();
-    spyOn(shared,"mySharedFunction");
-    const calc = new CalcService(shared);
+   // const shared = new SharedService();
+    //spyOn(shared,"mySharedFunction");
+   // const calc = new CalcService(shared);
     const result = calc.multiply(3,5);
     expect(shared.mySharedFunction).toHaveBeenCalled();
   })
 
   it("should call the  service createSpyObj", ()=>{
-   const shared = jasmine.createSpyObj("SharedService",["mySharedFunction"]);
-    const calc = new CalcService(shared);
+  // const shared = jasmine.createSpyObj("SharedService",["mySharedFunction"]);
+ //   const calc = new CalcService(shared);
     const result = calc.multiply(3,5);
     expect(shared.mySharedFunction).toHaveBeenCalled();
   })
